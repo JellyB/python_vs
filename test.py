@@ -1,3 +1,56 @@
+import requests
+
+# print(requests.get('https://api.github.com/events'))
+# print(requests.get('https://api.github.com/eventsblargh'))
+
+r = requests.get('http://localhost:9999/secret')
+print(r.status_code)
+print(r.text)
+
+
+# with open("number.txt", 'w') as writer:
+#     for n in range(30):
+#         if n % 2 == 0:
+#             writer.write(f'{n}\n')
+
+# with open('read.txt') as read:
+#     with open('copy.txt', 'w') as copy:
+#         copy.write(read.read())
+
+
+# with open("wechat_friends.csv") as my_csv:
+#     print(my_csv.read())
+
+# Create a string with 99 a's and one b.
+# There will always be one b, but it will be at a random position from 0 to 99.
+# import random
+# letters = ['a'] * 100
+# b = random.randint(0, 99)
+# letters[b] = 'b'
+# letters = "".join(letters)
+
+# # Search for the letter b in the string.
+# # How many times will this print "Not yet" ?
+# print("Looking for 'b' ...")
+# pos = 0
+# while letters[pos] != 'b':
+#     pos += 1
+#     print("Not yet")
+# print(f"Found it!{pos}")
+
+# def extract_place(file_str):
+#     # first = file_str.find('_')
+#     # tem_str = file_str[first + 1:]
+#     # second = tem_str.find('_')
+#     # return tem_str[:second]
+
+#     return file_str.split('_')[1]
+
+
+# print(extract_place("2018-06-06_MountainView_16:20:00.jpg"))
+
+
+
 
 # import random
 # import words
