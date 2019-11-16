@@ -29,11 +29,8 @@ class RandomPlayer(Player):
 class HumanPlayer(Player):
     """继承 Player 类 并接受人类输入结果.
     """
-    def __init__(self):
-        print('you need to chose "paper" or "rock" or "scissors" each time')
-
     def move(self):
-        move = input('paper, rock, scissors or quit >').lower()
+        move = input('rock, paper, scissors or quit >').lower()
         while move not in ['paper', 'rock', 'scissors', 'quit']:
             print("无效输入，请再试一次!")
             move = input('Please choose rock, paper, scissors, or quit >').lower()
@@ -57,67 +54,84 @@ class ReflectPlayer(RandomPlayer):
         if self.their_move == "":
             return super().move()
         else:
-            return self.
-        return self.next_move
-
-    
+            return self.their_move
 
 
-
-
-
-class CyclePlayer(Player):
-
+class CyclePlayer(RandomPlayer):
+    """
+    继承 RadnomPlayer 类，循环采用不同的选择
+    """
     def __init__(self):
-        self.index = 0
-
-    def move(self):
-        return moves[self.index % 3]
+        self.my_move = ""
+        self.their_move = ""
 
     def learn(self, my_move, their_move):
-        self.index += 1
+        self.my_move = my_move
+        self.their_move = their_move
+
+    def move(self):
+        if self.my_move == "":
+            return super().move()
+        elif self.my_move == "rock":
+            return "paper"
+        elif self.my_move == "paper":
+            return "scissors"
+        else:
+            return "rock"
 
 
 def beats(one, two):
-    if ((one == 'rock' and two == 'scissors') or
+        return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
-            (one == 'paper' and two == 'rock')):
-        return 1
-    elif ((one == 'rock' and two == 'paper') or
-            (one == 'scissors' and two == 'rock') or
-            (one == 'paper' and two == 'scissors')):
-        return 2
-    else:
-        return 0
+            (one == 'paper' and two == 'rock'))
 
 
 class Game:
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
+        self.result = {"p1": 0, "p2": 0}
+        self.end = False
+
+    def update_result(self, one, two):
+        if one == two:
+            print("It's is a tie!")
+        elif beats(one, two):
+            print("Player 1 won !")
+            self.result['p1'] += 1
+        else:
+            print("Player 2 won!")
+            self.result["p2"] += 1
 
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        result = beats(move1, move2)
-        if result == 1:
-            self.p1.score += 1
-        elif result == 2:
-            self.p2.score += 1
+        if move1 != 'quit':
+            print(f'Player 1: {move1}, Player 2: {move2}.')
+            self.update_result(move1, move2)
+            print(f"Score: Player one: {self.result['p1']}, Player two: {self.result['p2']}.")
+            self.p1.learn(move1, move2)
+            self.p2.learn(move1, move2)
         else:
-            print(f'Player 1 and Player 2 have same move {move1},{move2}')
-        print(f"P 1: {move1} {self.p1.score}  P 2: {move2} {self.p2.score}")
-        self.p1.learn(move1, move2)
-        self.p2.learn(move2, move1)
+            self.end = True
 
     def play_game(self):
         print("Game start!")
-        for round in range(3):
-            print(f"Round {round}:")
+        round = 1
+        while self.end == False and round <= 3:
+            print(f'round: {round}')
             self.play_round()
-        print("Game over!")
+            round += 1
+        print('最终结果:')
+        if self.result['p1'] == self.result['p2']:
+            print('势均力敌！')
+        elif self.result['p1'] > self.result['p2']:
+            print('Player 1 胜出！')
+        else:
+            print('Player 2 胜出！')
+        print(f'最后比分为: \n Player one: {self.result["p1"]} Player two: {self.result["p2"]}')
 
-
+        
 if __name__ == '__main__':
     game = Game(HumanPlayer(), CyclePlayer())
     game.play_game()
