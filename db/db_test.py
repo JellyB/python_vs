@@ -95,11 +95,11 @@ types = {
 for n in range(200):
     operate_type = list(types.keys())[n % 6]
     my_dict = {
-        'id': n + 1,
+        'id': n + 201,
         'biz_status': 1,
         'gmt_create': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         'gmt_modify': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        'operator': 'admin',
+        'operator': '张萌',
         'operate_type': operate_type,
         'operate_type_name': types[operate_type],
         'operate_target_id': random.randint(1, 200),
